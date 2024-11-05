@@ -1,4 +1,4 @@
-import { Home, Dumbbell, Users, LogOut } from 'lucide-react';
+import { Home, Dumbbell, Users, LogIn, LogOut, Settings, LucideIcon } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -7,24 +7,67 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from '@/components/ui/sidebar';
-import { ModeToggle } from '@/components/ui/mode-toggle';
-import { Link } from 'react-router-dom';
-const mainMenuItems = [
-  { title: '홈', url: '/', icon: Home },
-  { title: '챌린지', url: '/challenges', icon: Dumbbell },
-  { title: '커뮤니티', url: '/posts', icon: Users },
+import SidebarLink from '../ui/sidebar-link';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/RTK/store';
+import { logout } from '@/RTK/authSlice';
+
+interface BaseMenuItem {
+  title: string;
+  icon: LucideIcon;
+}
+
+interface LinkMenuItem extends BaseMenuItem {
+  type: 'link';
+  to: string;
+}
+
+interface ButtonMenuItem extends BaseMenuItem {
+  type: 'button';
+  onClick: () => void;
+}
+
+type MenuItem = LinkMenuItem | ButtonMenuItem;
+
+const mainMenuItems: MenuItem[] = [
+  { type: 'link', title: '홈', to: '/', icon: Home },
+  { type: 'link', title: '챌린지', to: '/challenges', icon: Dumbbell },
+  { type: 'link', title: '커뮤니티', to: '/posts', icon: Users },
 ];
 
 const AppSidebar = () => {
-  const { setOpenMobile } = useSidebar(); // useSidebar hook 사용
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn); // 로그인 상태 가져오기
 
-  const handleClick = () => {
-    setOpenMobile(false); // 메뉴 클릭 시 사이드바 닫기
+  const handleLogout = () => {
+    dispatch(logout());
   };
+
+  const authMenuItem: MenuItem = isLoggedIn
+    ? {
+        type: 'button',
+        title: '로그아웃',
+        icon: LogOut,
+        onClick: handleLogout,
+      }
+    : {
+        type: 'link',
+        title: '로그인',
+        to: '/sign-in',
+        icon: LogIn,
+      };
+
+  const subMenuItems: MenuItem[] = [
+    {
+      type: 'link',
+      title: '설정',
+      to: '/settings',
+      icon: Settings,
+    },
+    authMenuItem,
+  ];
 
   return (
     <Sidebar>
@@ -35,16 +78,15 @@ const AppSidebar = () => {
             <SidebarMenu>
               {mainMenuItems.map(item => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link
-                      to={item.url}
-                      className="flex items-center w-full gap-4 px-2 py-2"
-                      onClick={handleClick}
-                    >
-                      <item.icon className="w-5 h-5" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
+                  {item.type === 'link' ? (
+                    <SidebarLink type="link" to={item.to} icon={item.icon}>
+                      {item.title}
+                    </SidebarLink>
+                  ) : (
+                    <SidebarLink type="button" onClick={item.onClick} icon={item.icon}>
+                      {item.title}
+                    </SidebarLink>
+                  )}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -53,15 +95,19 @@ const AppSidebar = () => {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
-          <ModeToggle />
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <div className="flex items-center w-full gap-4 px-2 py-2 cursor-pointer">
-                <LogOut className="w-5 h-5" />
-                <span>로그아웃</span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          {subMenuItems.map(item => (
+            <SidebarMenuItem key={item.title}>
+              {item.type === 'link' ? (
+                <SidebarLink type="link" to={item.to} icon={item.icon}>
+                  {item.title}
+                </SidebarLink>
+              ) : (
+                <SidebarLink type="button" onClick={item.onClick} icon={item.icon}>
+                  {item.title}
+                </SidebarLink>
+              )}
+            </SidebarMenuItem>
+          ))}
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
