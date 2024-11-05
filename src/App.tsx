@@ -16,6 +16,7 @@ import SignUp from './pages/sign-up';
 import FindPassword from './pages/find-password';
 import FindEmail from './pages/account/find-email';
 import ChangePassword from './pages/account/change-password';
+import PostDetail from './pages/post-detail';
 
 const userName = '김홍삼';
 
@@ -32,6 +33,7 @@ export default function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/challenges" element={<Challenges />} />
                 <Route path="/posts" element={<Posts />} />
+                <Route path="/posts/detail/:id" element={<PostDetail />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/message-channels" element={<MessageChannels />} />
                 <Route path="/my-profile" element={<MyProfile />} />

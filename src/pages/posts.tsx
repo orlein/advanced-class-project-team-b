@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import PostPagination from '@/components/PostPagination';
+import { Link } from 'react-router-dom';
 
 const dummyPosts = [
   {
@@ -76,19 +77,21 @@ const Posts = () => {
       <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
         {currentPosts.map(post => (
           <Card key={post.id} className="overflow-hidden">
-            <CardHeader>
-              <CardTitle>{post.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="truncate">{post.content}</p>
-            </CardContent>
-            <CardFooter className="text-sm text-muted-foreground">
-              <time dateTime={post.createdAt}>
-                <span>
-                  {post.author} | {post.createdAt}
-                </span>
-              </time>
-            </CardFooter>
+            <Link to={`/posts/detail/${post.id}`}>
+              <CardHeader>
+                <CardTitle>{post.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="truncate">{post.content}</p>
+              </CardContent>
+              <CardFooter className="text-sm text-muted-foreground">
+                <time dateTime={post.createdAt}>
+                  <span>
+                    {post.author} | {post.createdAt}
+                  </span>
+                </time>
+              </CardFooter>
+            </Link>
           </Card>
         ))}
       </div>
