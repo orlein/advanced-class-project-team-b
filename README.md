@@ -825,31 +825,3 @@
 
 </details>
 
-<hr>
-
-<details>  
-<summary><strong>작성예시</strong></summary>
-  
-  ### ✅ Done
-  <hr>
-  - 구현 내용
-
-### ⚙️ in Progress
-
-  <hr>
-  
-  - 구현 중인 내용
-    - 세부사항
-    - 세부사항
-        
-  ### 📚 Next
-  <hr>
-  
-  - 구현 예정
-    - 세부사항
-    - 세부사항
-   
-  ### 🖼️ Preview
-  <hr>
-  ![사진이름](사진URL)
-</details>
