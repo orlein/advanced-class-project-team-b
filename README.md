@@ -1,4 +1,6 @@
-# 오즈코딩스쿨 심화반 프로젝트 템플릿
+<div align=center>
+  <img src='https://github.com/user-attachments/assets/95828767-099d-47ca-90a5-aef12248cae5' width=500 />
+</div>
 
 ## 팀원 소개
 
